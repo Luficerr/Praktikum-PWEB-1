@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pemesanan Hotel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    table {
+      width: 600px;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+
+    th {
+      text-align: left;
+      background-color: #f2f2f2;
+    }
+
+    .resume {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Form Pemesanan Hotel</h1>
+
+  <form id="formPemesanan" onsubmit="return simpanData()">
+    <table border="0">
+      <tr>
+        <td>Nama Pemesan</td>
+        <td><input type="text" id="nama" name="nama" required></td>
+      </tr>
+      <tr>
+        <td>Jenis Kelamin</td>
+        <td>
+          <select id="jenisKelamin" name="jenisKelamin" required>
+            <option value="">- Pilih -</option>
+            <option value="Laki-Laki">Laki-Laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Nomor Identitas</td>
+        <td>
+          <input type="text" id="nomorIdentitas" name="nomorIdentitas" required>
+          <span id="errorIdentitas" class="error"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>Tipe Kamar</td>
+        <td>
+          <select id="tipeKamar" name="tipeKamar" onchange="setHarga()" required>
+            <option value="">- Pilih -</option>
+            <option value="Standar">Standar</option>
+            <option value="Deluxe">Deluxe</option>
+            <option value="Family">Family</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Harga</td>
+        <td><input type="number" id="harga" name="harga" readonly></td>
+      </tr>
+      <tr>
+        <td>Tanggal Pesan</td>
+        <td><input type="date" id="tanggalPesan" name="tanggalPesan" placeholder="dd/mm/yyyy" required></td>
+      </tr>
+      <tr>
+        <td>Durasi Menginap</td> 
+        <td>
+          <input type="number" id="durasi" name="durasi" required>
+          <span id="errorDurasi" class="error">hari</span>
+        </td>
+        
+        
+      </tr>
+      <tr>
+        <td>Termasuk Breakfast</td>
+        <td><input type="checkbox" id="breakfast"> Ya</td>
+      </tr>
+      <tr>
+        <td>Total Bayar</td>
+        <td><input type="number" id="totalBayar" name="totalBayar" readonly></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align: center;">
+          <button type="button" onclick="hitungTotal()">Hitung</button>
+          <button type="submit">Simpan</button>
+          <button type="reset">Batal</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <div id="resume" class="resume"></div>
+
+  <script>
+    function setHarga() {
+      const tipeKamar = document.getElementById("tipeKamar").value;
+      let harga = 0;
+
+      if (tipeKamar === "Standar") {
+        harga = 300000;
+      } else if (tipeKamar === "Deluxe") {
+        harga = 500000;
+      } else if (tipeKamar === "Family") {
+        harga = 800000;
+      }
+
+      document.getElementById("harga").value = harga;
+    }
+
+    function hitungTotal() {
+      const harga = parseInt(document.getElementById("harga").value) || 0;
+      const durasi = parseInt(document.getElementById("durasi").value) || 0;
+      const includeBreakfast = document.getElementById("breakfast").checked;
+      let totalBayar = harga * durasi;
+
+      if (durasi > 3) {
+        totalBayar -= totalBayar * 0.10;
+      }
+
+      if (includeBreakfast) {
+        totalBayar += 80000;
+      }
+
+      document.getElementById("totalBayar").value = totalBayar;
+    }
+
+    function simpanData() {
+      const nama = document.getElementById("nama").value;
+      const jenisKelamin = document.getElementById("jenisKelamin").value;
+      const nomorIdentitas = document.getElementById("nomorIdentitas").value;
+      const tipeKamar = document.getElementById("tipeKamar").value;
+      const harga = document.getElementById("harga").value;
+      const tanggalPesan = document.getElementById("tanggalPesan").value;
+      const durasi = document.getElementById("durasi").value;
+      const totalBayar = document.getElementById("totalBayar").value;
+      const includeBreakfast = document.getElementById("breakfast").checked;
+
+      if (nomorIdentitas.length !== 16 || isNaN(nomorIdentitas)) {
+        document.getElementById("errorIdentitas").textContent = "Isian salah, harus 16 digit.";
+        return false;
+      } else {
+        document.getElementById("errorIdentitas").textContent = "";
+      }
+
+      document.getElementById("resume").innerHTML = `
+        <h2>Resume Pemesanan</h2>
+        <p><strong>Nama Pemesan:</strong> ${nama}</p>
+        <p><strong>Jenis Kelamin:</strong> ${jenisKelamin}</p>
+        <p><strong>Nomor Identitas:</strong> ${nomorIdentitas}</p>
+        <p><strong>Tipe Kamar:</strong> ${tipeKamar}</p>
+        <p><strong>Durasi Menginap:</strong> ${durasi} hari</p>
+        <p><strong>Total Bayar:</strong> Rp${totalBayar}</p>
+        <p><strong>Breakfast:</strong> ${includeBreakfast ? "Ya" : "Tidak"}</p>
+      `;
+
+      return false;
+    }
+  </script>
+
+</body>
+
+</html>

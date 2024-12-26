@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+</head>
+<body>
+    <h1>FORM LOGIN</h1>
+    <form id="login">
+        <label for="username">Username</label><br>
+        <input type="text" id="username" name="username" required> <br>
+
+        <label for="password">Password</label><br>
+        <input type="password" id="password" name="password" required> <br> 
+
+        <button type="button" onclick="login()">Login</button>
+
+    </form>
+
+    <script>
+        function login() {
+            const cuser = "admin";
+            const  cpass = "admin123";
+
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            if (user === cuser && pass === cpass) {
+                window.location.href ="data.html";
+            } else {
+                alert("Login gagal");
+            }
+
+        }
+    </script>
+</body>
+</html>

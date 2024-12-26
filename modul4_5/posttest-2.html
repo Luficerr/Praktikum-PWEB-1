@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostTest No. 2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+    }
+
+    input[type="number"], input[type="text"] {
+      width: 100%;
+    }
+
+    #nota {
+      margin-top: 20px;
+      border: 1px solid #000;
+      padding: 15px;
+      max-width: 400px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    /* .center-text {
+      text-align: center;
+    } */
+  </style>
+</head>
+<body>
+  <h1>Data Penjualan Barang</h1>
+  <form>
+    <table border="1">
+      <tr style="text-align: center">
+        <td colspan="2">Data Penjualan Barang</td>
+      </tr>
+      <tr>
+        <td><label for="kodeBarang">Kode Barang</label></td>
+        <td>
+          <select id="kodeBarang" onchange="hitungPenjualan()">
+            <option value="">Pilih Satu</option>
+            <option value="B001">B001</option>
+            <option value="B002">B002</option>
+            <option value="B003">B003</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="jumlahBeli">Jumlah Beli</label></td>
+        <td><input type="number" id="jumlahBeli" min="0" onchange="hitungPenjualan()" /></td>
+      </tr>
+      <tr>
+        <td><label>Nama Barang</label></td>
+        <td><input type="text" id="namaBarang" readonly /></td>
+      </tr>
+      <tr>
+        <td><label>Harga</label></td>
+        <td><input type="number" id="hargaBarang" readonly /></td>
+      </tr>
+      <tr>
+        <td><label>Jumlah Bayar</label></td>
+        <td><input type="number" id="jumlahBayar" readonly /></td>
+      </tr>
+      <tr>
+        <td><label>Potongan</label>
+          <input type="number" id="potongan" readonly style="width: 50px;"/> %
+        </td>
+        <td><input type="number" id="hargaDiskon" readonly style="width: 100px;"/></td>
+      </tr>
+      <tr>
+        <td><label>Total Bayar</label></td>
+        <td><input type="number" id="totalBayar" readonly /></td>
+      </tr>
+      <tr style="text-align: center">
+        <td colspan="2">
+          <button type="button" onclick="tampilkanNota()">TAMPILKAN</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <div id="nota" style="margin-top: 20px; padding: 10px; border: 1px solid #000; width: 300px">
+    <script> 
+      const dataBarang = {
+        "B001": { nama: "Buku", harga: 5000 },
+        "B002": { nama: "Penggaris", harga: 1500 },
+        "B003": { nama: "Pulpen", harga: 2000 }
+      };
+  
+      function hitungPenjualan() {
+        const kode = document.getElementById("kodeBarang").value;
+        const jumlahBeli = parseInt(document.getElementById("jumlahBeli").value) || 0;
+        
+        if (kode && dataBarang[kode]) {
+          const harga = dataBarang[kode].harga;
+          const jumlahBayar = harga * jumlahBeli;
+  
+          let persenPotongan = 0;
+          if (jumlahBeli >= 0 && jumlahBeli <= 10) {
+            persenPotongan = 5;
+          } else if (jumlahBeli <= 20) {
+            persenPotongan = 10;
+          } else {
+            persenPotongan = 15;
+          }
+  
+          const potongan = jumlahBayar * (persenPotongan / 100);
+          const totalBayar = jumlahBayar - potongan;
+
+          document.getElementById("namaBarang").value = dataBarang[kode].nama;
+          document.getElementById("hargaBarang").value = harga;
+          document.getElementById("jumlahBayar").value = jumlahBayar;
+          document.getElementById("potongan").value = persenPotongan;
+          document.getElementById("hargaDiskon").value = potongan;
+          document.getElementById("totalBayar").value = totalBayar;
+        } else {
+          document.getElementById("namaBarang").value = "";
+          document.getElementById("hargaBarang").value = "";
+          document.getElementById("jumlahBayar").value = "";
+          document.getElementById("potongan").value = "";
+          document.getElementById("hargaDiskon").value = "";
+          document.getElementById("totalBayar").value = "";
+        }
+      }
+  
+      function tampilkanNota() {
+        const kode = document.getElementById("kodeBarang").value;
+        const nama = document.getElementById("namaBarang").value;
+        const harga = parseInt(document.getElementById("hargaBarang").value);
+        const jumlahBeli = parseInt(document.getElementById("jumlahBeli").value);
+        const jumlahBayar = parseInt(document.getElementById("jumlahBayar").value);
+        const potongan = parseFloat(document.getElementById("potongan").value);
+        const hargaDiskon = parseInt(document.getElementById("hargaDiskon").value);
+        const totalBayar = parseInt(document.getElementById("totalBayar").value);
+  
+        document.getElementById("nota").innerHTML = `
+          <h2>NOTA PENJUALAN</h2>
+          <p>Kode Barang = ${kode}</p>
+          <p>Nama Barang = ${nama}</p>
+          <p>Harga Barang = ${harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+          <p>Jumlah Beli = ${jumlahBeli}</p>
+          <hr>
+          <p>Jumlah Bayar = ${jumlahBayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+          <p>Potongan (${potongan}%) = ${hargaDiskon.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+          <hr>
+          <p><strong>Total Bayar = ${totalBayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</strong></p>
+          <p>----- Terima Kasih -----</p>
+        `;
+
+        // document.getElementById("nota").innerHTML = `
+        //   <h2>NOTA PENJUALAN</h2>
+        //   <pre style="text-align: center;">
+        //     Kode Barang  = ${kode}
+        //     Nama Barang  = ${nama}
+        //     Harga Barang = ${harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+        //     Jumlah Beli  = ${jumlahBeli}
+        //     <hr>
+        //     Jumlah Bayar = ${jumlahBayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+        //     Potongan (${potongan}%) = ${hargaDiskon.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+        //     <hr>
+        //     Total Bayar  = ${totalBayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+        //   </pre>
+        //   <center>----- Terima Kasih -----</center>
+        // `;
+      }
+    </script>
+  </div>
+</body>
+</html>
