@@ -41,7 +41,7 @@
 }
 
 .nav ul li a:hover {
-    color: #FFC107; /* Warna kuning cerah saat hover */
+    color: #4CAF50;
 }
 
 /* Main Section */
@@ -124,6 +124,10 @@
     text-align: center;
     padding: 15px;
     font-size: 14px;
+}
+
+.footer span {
+    color: pink;
 }
 
 /* Hover efek untuk semua elemen yang interaktif */

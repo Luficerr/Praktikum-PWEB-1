@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: -1;
+    }
+    .container {
+      padding: 20px;
+      width: 350px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      z-index: 1;
+    }
+    .text-center {
+        margin-bottom: 20px;
+    }
+    .btn {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container shadow-lg p-3 mb-5">
+    <h2 class="text-center">Login Admin</h2>
+    <form id="loginForm" onsubmit="return false;">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" class="form-control" placeholder="Enter username">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="Enter password">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const correctUsername = "admin";
+      const correctPassword = "123";
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const message = document.getElementById('message');
+
+      if (username === correctUsername && password === correctPassword) {
+        message.textContent = "Login successful!";
+        message.className = "message success";
+        setTimeout(() => {
+          window.location.href = "menu-admin.html";
+        }, 1000);
+      } else {
+        message.textContent = "Invalid username or password!";
+        message.className = "message error";
+      }
+    }
+  </script>
+</body>
+</html>
